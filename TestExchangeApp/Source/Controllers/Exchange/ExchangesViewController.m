@@ -26,6 +26,8 @@ NSString *const kCellReuseIdenifier = @"ExchangeTableViewCell";
 @property (weak, nonatomic) IBOutlet UIView *pickerHiddingView;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
 @property (strong, nonatomic) ExchangesManager *exchangeManager;
 
 @property (strong, nonatomic) NSArray<Exchange *> *exchanges;
@@ -44,7 +46,7 @@ NSString *const kCellReuseIdenifier = @"ExchangeTableViewCell";
     
     [self setupTableView];
     [self setupManagers];
-    [self fetchDataSouce];
+    [self fetchDataSource];
     [self updateButtonStates];
     [self initialSetupPicker];
 }
@@ -61,6 +63,18 @@ NSString *const kCellReuseIdenifier = @"ExchangeTableViewCell";
 - (void)setupTableView {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    [self addRefreshControl];
+}
+
+- (void)addRefreshControl {
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.tableView addSubview:self.refreshControl];
+    [self.refreshControl addTarget:self action:@selector(refreshTable) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)refreshTable {
+    [self fetchDataSource];
 }
 
 - (void)setupManagers {
@@ -76,9 +90,9 @@ NSString *const kCellReuseIdenifier = @"ExchangeTableViewCell";
 #pragma mark - data -
 /*----------------------------------*/
 
-- (void)fetchDataSouce {
-    [self.indicatorView startAnimating];
+- (void)fetchDataSource {
     [self.exchangeManager fetchExchangesWithRatesWithCallback:^(NSArray<Exchange *> * _Nullable result, NSError * _Nullable error) {
+        [self.refreshControl endRefreshing];
         [self.indicatorView stopAnimating];
         if(!error) {
             [CurrencyManager sharedInstance].reservedExchanges = result;
