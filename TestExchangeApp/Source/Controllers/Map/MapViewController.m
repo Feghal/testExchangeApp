@@ -43,7 +43,6 @@
     self.userPin.coordinate = loc;
     self.userPin.title = branch.title;
     [self.mapView addAnnotation:self.userPin];
-
 }
 
 - (void)setupMap {
@@ -69,6 +68,10 @@
     return NO;
 }
 
+/*----------------------------------*/
+#pragma mark - CLLocationManagerDelegate -
+/*----------------------------------*/
+
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
     if ([self isAuthorized:status]) {
         [self.manager startUpdatingLocation];
@@ -76,10 +79,6 @@
         [self.manager stopUpdatingLocation];
     }
 }
-
-/*----------------------------------*/
-#pragma mark - CLLocationManagerDelegate -
-/*----------------------------------*/
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     CLLocation *loc = locations[0];

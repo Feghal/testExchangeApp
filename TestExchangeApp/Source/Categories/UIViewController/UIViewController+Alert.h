@@ -12,6 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (Alert)
 
+/**
+ Show alert with error localized description as message
+
+ @param error NSError object
+ */
 - (void)showError:(NSError *)error;
 @end
 

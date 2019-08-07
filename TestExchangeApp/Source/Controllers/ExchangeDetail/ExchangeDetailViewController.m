@@ -175,7 +175,6 @@ NSString *const kBranchCellReuseIdenifier = @"BranchTableViewCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == 1) {
         Branch *branch = self.branches[indexPath.row];
-
         [self setupViewWithBranch:branch];
     }
 }

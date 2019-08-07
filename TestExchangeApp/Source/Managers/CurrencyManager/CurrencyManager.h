@@ -23,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (strong, nonatomic) NSString *cashType;
 
+/**
+ Reserved exchanges used to keep original exchanges when we filter them for currency
+ */
 @property (strong, nonatomic) NSArray<Exchange *> *reservedExchanges;
 
 /**
